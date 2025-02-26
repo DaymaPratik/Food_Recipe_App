@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import AOS styles
+
 
 
 function HomeMealsCategoriesListBox() {
@@ -9,7 +13,12 @@ function HomeMealsCategoriesListBox() {
       const [showGetDetailsButton,setShowGetDetailsButton]=useState(false)
       const [index,setIndex]=useState(null);
     const navigate=useNavigate();
-    useEffect(()=>{           
+    useEffect(()=>{  
+      AOS.refresh();  
+      AOS.init({
+        duration: 500, 
+        easing: "ease-in-out",
+      });       
         const getMealsByCategoriesFunction=async()=>{
             try {
                 const mealsData=await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php');
@@ -22,10 +31,12 @@ function HomeMealsCategoriesListBox() {
        
     },[])
   return (
-        <main className='h-fit w-full md:w-[95vw] box-border mx-auto text-center my-10'>
-        <h1 className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative bg-gradient-to-r
+        <main className='h-fit w-full md:w-[95vw] box-border mx-auto text-center my-10 overflow-x-hidden'>
+        <h1 className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative 
+        bg-gradient-to-r
          from-[#ff0000] to-[#000642] bg-clip-text  font-black
-     text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px] md:tracking-[7px] my-5'>
+     text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px]
+      md:tracking-[7px] my-5'  data-aos="fade-left">
       Find The Meal Recipe From The Given Categories</h1>
          <section className='h-full w-full grid  grid-cols-1 min-[350px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 
          sm:gap-10 p-5 sm:p-10'>
@@ -33,7 +44,11 @@ function HomeMealsCategoriesListBox() {
             return (
             <div  key={idx} className='text-[20px] font-semibold rounded-[15px] cursor-pointer 
             shadow-[0px_0px_10px_1px_black]  hover:shadow-[0px_0px_10px_3px_#14262196] 
-            hover:scale-[103%] transition ease-in duration-150  h-fit w-[95%] mx-auto' >
+            hover:scale-[103%] transition ease-in duration-150  h-fit w-[95%] mx-auto' 
+            data-aos="fade-left"
+            data-aos-delay={idx * 100} 
+            data-aos-duration={800 + idx * 50}
+            >
                 <Link to={`/meals/category/${item.strCategory}`}
                  className='relative w-full block h-[100%] hover:text-red-500'
                  onMouseEnter={()=>{
@@ -45,10 +60,12 @@ function HomeMealsCategoriesListBox() {
                 {
                 (showGetDetailsButton && idx===index)
                 && 
-                <div className='flex justify-center items-center absolute w-full h-full 
+                <motion.div 
+                whileTap={{scale:0.9}}
+                className='flex justify-center items-center absolute w-full h-full 
                  bg-[#bdfbea96] z-20 text-black rounded-[15px] '>
                 <p className='w-fit p-2 '>Get Similar Dishes</p>
-                </div>
+                </motion.div>
                 }
                 
                  

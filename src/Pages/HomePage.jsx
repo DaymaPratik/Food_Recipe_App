@@ -6,7 +6,10 @@ import { LikedRecipesContext } from '../context/LikedRecipesContextProvider'
 
 function HomePage() {
   const{setIsSideBarVisible}=useContext(LikedRecipesContext);
-  useEffect(()=>{setIsSideBarVisible(false)},[])
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+    setIsSideBarVisible(false)}
+    ,[])
   return (
    <main className='h-fit relative w-full box-border'>
      

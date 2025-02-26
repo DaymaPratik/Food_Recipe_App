@@ -3,6 +3,10 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { LikedRecipesContext } from "../context/LikedRecipesContextProvider";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+
 
 function DetailsPage() {
   const { mealId } = useParams();
@@ -10,6 +14,13 @@ function DetailsPage() {
  const{setIsSideBarVisible}=useContext(LikedRecipesContext);
   useEffect(() => {
     setIsSideBarVisible(false)
+    window.scrollTo(0, 0);
+    AOS.refresh();  
+    AOS.init({
+      duration: 500, 
+      easing: "ease-in-out",
+      once:false
+    });   
     const getMealDetailsFunction = async () => {
       try {
         const mealDetailedData = await axios.get(
@@ -26,10 +37,10 @@ function DetailsPage() {
   let mealIngiridientKeysArray = Object.keys(mealDetailObject);
 
   return (
-    <main className="pt-15 font-mono">
+    <main className="pt-15 font-mono overflow-x-hidden">
        <h1
             className="text-[30px] md:text-[40px] lg:text-[50px] relative bg-gradient-to-r from-[#ff0000] to-[#000642] bg-clip-text  font-black
-     text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px]  md:tracking-[7px] my-5"
+     text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px]  md:tracking-[7px] my-5" data-aos="fade-left"
           >{mealDetailObject.strMeal}
         </h1>
       <section
@@ -43,9 +54,12 @@ function DetailsPage() {
             backgroundSize: "contain",
             backgroundPosition: "center",
           }}
+          data-aos="fade-right"
         ></section>
-     {/* <div className="bg-[#7410f685] rounded-[40px] absolute h-full w-full top-0 left-0"></div> */}
-        <section className="w-[90%] md:w-[55%] lg:w-[45%] bg-center bg-cover bg-fixed flex items-center
+    
+        <section
+        data-aos="fade-left"
+        className="w-[90%] md:w-[55%] lg:w-[45%] bg-center bg-cover bg-fixed flex items-center
          justify-center rounded-[40px] relative mx-2  h-fit
            bg-[url('https://images.unsplash.com/photo-1530714457710-6bf1899c1d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
        
@@ -119,11 +133,12 @@ function DetailsPage() {
 
       <section className="list-plus-heading-box">
          <h6  className="text-[15px] xs:text-[18px] md:text-[27px] lg:text-[35px] uppercase bg-gradient-to-r from-[#ff0000] to-[#000642] bg-clip-text 
-     font-extrabold text-transparent text-center py-4 w-[100%] tracking-normal xs:tracking-[2px] md:tracking-[7px]">
+     font-extrabold text-transparent text-center py-4 w-[100%] tracking-normal xs:tracking-[2px] md:tracking-[7px]"
+     data-aos="fade-left">
       -- Ingidients List Given Below --</h6>
             <ul className="text-[10px] min-[350px]:text-[14px] md:text-[17px] lg:text-[20px] grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 gap-3 lg:gap-5 p-5 lg:p-10 w-full  bg-center bg-cover bg-fixed
            bg-[url('https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-blurred-gradient-background-in-bright-rainbow-colors-colorful-rainbow-gradient-image_15684346.jpg')]
-            h-full ">
+            h-full " data-aos="fade-left">
             
               {mealIngiridientKeysArray
                 .filter((keyItem) => {
@@ -147,6 +162,9 @@ function DetailsPage() {
                       className="p-2 bg-gradient-to-r from-[#05213bd0] 
            to-[#190639e0] text-white
                        shadow-[0px_0px_3px_2px_black] tracking-wider font-semibold"
+                       data-aos="fade-left"
+                       data-aos-delay={i*100}
+                       data-aos-duration={500 + i * 50}
                     >
                       {mealString}
                     </li>
@@ -159,9 +177,13 @@ function DetailsPage() {
 
 
       <section className=" ">
-        <h6 className="text-[15px] xs:text-[18px] md:text-[27px] lg:text-[35px] uppercase bg-gradient-to-r from-[#ff0000] to-[#000642] bg-clip-text 
+        <h6 
+        data-aos="fade-left"
+        className="text-[15px] xs:text-[18px] md:text-[27px] lg:text-[35px] uppercase bg-gradient-to-r from-[#ff0000] to-[#000642] bg-clip-text 
      font-extrabold text-transparent text-center py-4 w-[100%] tracking-normal xs:tracking-[2px] md:tracking-[7px]">-- Instructions are Given Below --</h6>
-      <p  className="text-[8px] xs:text-[12px] sm:text-[15px] md:text-[18px] lg:text-[20px] font-bold text-center p-2 xs:p-5 md:p-10 w-[100%]  bg-center bg-cover bg-fixed
+      <p
+      data-aos="fade-left"  
+      className="text-[12px] xs:text-[15px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold text-center p-2 xs:p-5 md:p-10 w-[100%]  bg-center bg-cover bg-fixed
            bg-[url('https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-blurred-gradient-background-in-bright-rainbow-colors-colorful-rainbow-gradient-image_15684346.jpg')]">
      <span className="bg-gradient-to-r  from-[#05213bd0] 
            to-[#190639e0] w-full h-full top-0 left-0 text-[white] tracking-wider">{mealDetailObject.strInstructions}</span>

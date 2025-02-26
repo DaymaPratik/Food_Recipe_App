@@ -10,6 +10,9 @@ import SearchBoxResultPage from './Pages/SearchBoxResultPage'
 import LikedRecipesListPage from './Pages/LikedRecipesListPage'
 import SideBar from './Componenets/SideBar'
 
+import { ToastContainer} from 'react-toastify';
+
+
 
 function AppRouter() {
   const{isSideBarVisible,setIsSideBarVisible}=useContext(LikedRecipesContext);
@@ -17,9 +20,22 @@ function AppRouter() {
   return (
  
      <BrowserRouter>
+  
      <main className='w-full h-fit relative'>
      <Navbar/>
     {isSideBarVisible && <SideBar/>}
+    <ToastContainer
+    position="top-center"
+    autoClose={3000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick={false}
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
    <Routes>
        <Route path='/' element={<HomePage/>}/>
        <Route path="/meals/category/:categoryType" element={<MealsOfSameCategoiresPage/>}/>

@@ -4,6 +4,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { LikedRecipesContext } from '../context/LikedRecipesContextProvider';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import SearchedPageCover from '../Componenets/SearchedPageCover';
+import { motion } from "framer-motion";
+import { toast } from 'react-toastify';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function SearchBoxResultPage() {
     const {setSearchedInput,likedRecipesArray,setLikedRecipesArray,setIsSideBarVisible}=useContext(LikedRecipesContext);
@@ -12,7 +16,15 @@ function SearchBoxResultPage() {
     const [index,setIndex]=useState(null);
     const navigate=useNavigate();
     const {searchInput}=useParams();
-     useEffect(()=>{ setIsSideBarVisible(false)},[])
+      useEffect(()=>{
+        window.scrollTo(0, 0);
+          AOS.refresh();  
+               AOS.init({
+                 duration: 500, 
+                 easing: "ease-in-out",
+               });       
+         setIsSideBarVisible(false)
+       },[])
     useEffect(()=>{
        const getSerachEdResultFunction=async()=>{
         try {
@@ -55,15 +67,19 @@ function SearchBoxResultPage() {
     </div>
   </main>
      :
-     <main className='h-fit w-full md:w-[95vw]'>
-     <h3 className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative bg-gradient-to-r
+     <main className='h-fit w-full md:w-[95vw] overflow-x-hidden'>
+     <h3 data-aos="fade-left" className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative bg-gradient-to-r
          from-[#ff0000] to-[#000642] bg-clip-text  font-black
      text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px] md:tracking-[7px] my-5'>{`Meals Releated to the ${searchInput}`}</h3>
      <section className='h-full w-full grid grid-cols-1  min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 
          lg:gap-10 p-5 lg:p-10' >
          {searchedResultsArray?.map((item,idx)=>{
               return (
-                 <div  key={idx} className='text-[18px] hover:underline flex flex-col justify-between items-center
+                 <div 
+                 data-aos="fade-left"
+                 data-aos-duration={800 + idx*50}
+                 data-aos-delay={idx*100}
+                 key={idx} className='text-[18px] hover:underline flex flex-col justify-between items-center
                                          hover:shadow-[0px_0px_10px_3px_black] hover:scale-[103%] transition ease-in duration-150 py-4 h-fit min-h-[350px] 
                                          font-semibold shadow-[0px_0px_3px_1px_black] rounded-[5px]' >
                                     
@@ -78,10 +94,12 @@ function SearchBoxResultPage() {
                                             {
                                             (showGetDetailsButton && idx===index)
                                             && 
-                                            <div className='absolute h-full flex flex-col  justify-center items-center 
+                                            <motion.div 
+                                            whileTap={{scale:0.9}}
+                                            className='absolute h-full flex flex-col  justify-center items-center 
                                                      w-full bg-[#09090990] text-white'>
                                             <p className='w-fit p-2 text-white '>Get Details</p>
-                                            </div>
+                                            </motion.div>
                                             }
                                               
                                                     <img src={item.strMealThumb} alt=""
@@ -90,12 +108,25 @@ function SearchBoxResultPage() {
                                               
                                             
                                             </Link>
-                                    <div className='hover:bg-red-500 rounded-[15px] border-2 border-red-500 hover:text-white transition duration-150
+                                    <motion.div
+                                    whileTap={{scale:1.5}}
+                                     className='hover:bg-red-500 rounded-[15px] border-2 border-red-500 hover:text-white transition duration-150
                                     ease-in-out block w-fit px-6 mt-4 py-2 mx-auto h-[5%]'
-                                    onClick={()=>{addToLikedRecipiesFunction(item)}}
+                                    onClick={()=>{
+                                      addToLikedRecipiesFunction(item)
+                                    toast.success("Added to Liked Recipes....",{position: "top-center",
+                                                                                autoClose: 3000,
+                                                                                hideProgressBar: false,
+                                                                                closeOnClick: false,
+                                                                                pauseOnHover: true,
+                                                                                draggable: true,
+                                                                                progress: undefined,
+                                                                                theme: "dark",
+                                                                                })
+                                    }}
                                     >
                                      <button>Like</button>
-                                 </div>
+                                 </motion.div>
                                  
                            </div>
                 

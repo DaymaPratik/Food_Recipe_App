@@ -5,6 +5,7 @@ import './index.css'
 import AppRouter from './AppRouter.jsx'
 import LikedRecipesContextProvider from './context/LikedRecipesContextProvider.jsx'
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
      <LikedRecipesContextProvider>

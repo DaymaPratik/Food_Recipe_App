@@ -4,6 +4,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { LikedRecipesContext } from '../context/LikedRecipesContextProvider';
 import SameCategoryCover from '../Componenets/SameCategoryCover';
+import { motion } from "framer-motion";
+import { toast } from 'react-toastify';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function MealsOfSameCategoiresPage() {
   const [mealsOfSameCategoryArray,setMealsOfSameCategoryArray]=useState([]);
@@ -12,7 +16,15 @@ function MealsOfSameCategoiresPage() {
   const [index,setIndex]=useState(null);
   const {categoryType}=useParams();
   const { setIsSideBarVisible,setSearchedInput,likedRecipesArray,setLikedRecipesArray}=useContext(LikedRecipesContext);
-   useEffect(()=>{ setIsSideBarVisible(false)},[])
+   useEffect(()=>{
+    window.scrollTo(0, 0);
+     AOS.refresh();  
+          AOS.init({
+            duration: 500, 
+            easing: "ease-in-out",
+          });       
+    setIsSideBarVisible(false)
+  },[])
 
   const addToLikedRecipiesFunction=(item)=>{
     setLikedRecipesArray([...likedRecipesArray,item]);
@@ -38,8 +50,10 @@ function MealsOfSameCategoiresPage() {
       {/* COVER SECTION  */}
       <SameCategoryCover categoryType={categoryType}/>
       {/* MEALS OF SAME CTAEGORIES BOX  */}
-      <main className='h-fit w-full md:w-[95vw] mx-auto  text-center '>
-      <h2 className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative bg-gradient-to-r
+      <main className='h-fit w-full md:w-[95vw] mx-auto  text-center overflow-x-hidden'>
+      <h2 
+      data-aos="fade-left"
+      className='text-[20px] xs:text-[25px] md:text-[30px] lg:text-[35px] relative bg-gradient-to-r
          from-[#ff0000] to-[#000642] bg-clip-text  font-black
      text-transparent uppercase h-fit text-center py-3 w-[100%] tracking-[3px] md:tracking-[7px] my-5'>Meals related to {categoryType} Category</h2>
       <section className='h-full w-full grid grid-cols-1  min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 
@@ -47,7 +61,11 @@ function MealsOfSameCategoiresPage() {
        {mealsOfSameCategoryArray.map((item,idx)=>{
             return (
                        
-                  <div  key={idx} className='text-[18px] hover:underline flex flex-col justify-between items-center
+                  <div 
+                  data-aos="fade-left"
+                  data-aos-duration={800 + idx*50}
+                  data-aos-delay={idx*100}
+                  key={idx} className='text-[18px] hover:underline flex flex-col justify-between items-center
                                       shadow-[0px_0px_2px_1px_black] hover:scale-[103%] transition ease-in duration-150 py-4 min-h-full h-fit   
                                       font-semibold hover:shadow-[0px_0px_10px_3px_red] rounded-[5px]' >
                    
@@ -62,10 +80,12 @@ function MealsOfSameCategoiresPage() {
                            {
                            (showGetDetailsButton && idx===index)
                            && 
-                           <div className='flex justify-center items-center absolute w-full h-full 
+                           <motion.div
+                           whileTap={{scale:0.9}}
+                           className='flex justify-center items-center absolute w-full h-full 
                             bg-[#b733338a] z-20'>
                            <p className='w-fit p-2 text-white'>Get Details</p>
-                           </div>
+                           </motion.div>
                            }
                              
                                    <img src={item.strMealThumb} alt=""
@@ -74,12 +94,25 @@ function MealsOfSameCategoiresPage() {
                              
                            
                            </Link>
-                   <div className='hover:bg-red-500 rounded-[15px] border-2 border-red-500 hover:text-white transition duration-150
+                   <motion.div 
+                   whileTap={{scale:1.5}}
+                   className='hover:bg-red-500 rounded-[15px] border-2 border-red-500 hover:text-white transition duration-150
                    ease-in-out block w-fit px-6 mt-4 py-2 mx-auto h-[5%]'
-                   onClick={()=>{addToLikedRecipiesFunction(item)}}
+                   onClick={()=>{
+                    addToLikedRecipiesFunction(item)
+                    toast.success("Added to Liked Recipes....",{position: "top-center",
+                                            autoClose: 3000,
+                                            hideProgressBar: false,
+                                            closeOnClick: false,
+                                            pauseOnHover: true,
+                                            draggable: true,
+                                            progress: undefined,
+                                            theme: "dark",
+                                            })
+                   }}
                    >
                     <button>Like</button>
-                </div>
+                </motion.div>
                 
           </div>
                  

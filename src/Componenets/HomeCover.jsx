@@ -2,6 +2,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { LikedRecipesContext } from '../context/LikedRecipesContextProvider'
 import { useNavigate } from 'react-router-dom';
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import AOS styles
 
 function HomeCover() {
   const {searchedInput,setSearchedInput,notValidInput,setNotValidInput}=useContext(LikedRecipesContext);
@@ -17,6 +19,10 @@ function HomeCover() {
    }
 }
 useEffect(()=>{
+    AOS.init({
+          duration: 100, 
+          easing: "ease-in-out",
+        }); 
   setNotValidInput(false);
 },[])
 
@@ -26,13 +32,16 @@ useEffect(()=>{
     bg-cover bg-center bg-no-repeat '>
       <section className='absolute h-full flex flex-col  justify-center items-center 
       w-full bg-[#5effd470] '>
-        <h3 className='text-[20px] sm:text-[25px] md:text-[30px] text-center lg:text-[35px] font-bold py-3 '>
+        <h3 className='text-[20px] sm:text-[25px] md:text-[30px] text-center lg:text-[35px] font-bold py-3 ' 
+        data-aos="fade-left">
           Find the Perfect Recipe for Your Family!
           👨‍👩‍👧‍👦
            </h3>
-        <h5 className='text-[17px] text-center sm:text-[20px] md:text-[25px] lg:text-[30px] font-semibold py-3 '> Discover delicious meals with just one click 🍽️</h5>
+        <h5 className='text-[17px] text-center sm:text-[20px] md:text-[25px] lg:text-[30px] font-semibold py-3 ' 
+        data-aos="fade-left"> Discover delicious meals with just one click 🍽️</h5>
         <form action="" className='text-[14px] xs:text-[18px] md:text-[25px] mx-auto gap-0  flex
-         justify-center items-center w-[100%] xs:w-[90%] lg:w-[80%] p-2 md:p-5'>
+         justify-center items-center w-[100%] xs:w-[90%] lg:w-[80%] p-2 md:p-5' 
+         data-aos="fade-left">
             <input type="text"
              placeholder='Search for pasta, pizza, or desserts...' 
              className='w-[85%] md:w-[70%] xl:w-[85%] p-2 bg-[#100f0fad] text-white rounded-l-[10px]
